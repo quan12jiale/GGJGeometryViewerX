@@ -766,7 +766,8 @@ void CGeometryViewer::onItemChanged(QTreeWidgetItem *pItem, int nCol)
 {
     CGroupNode *pGroupNode = (CGroupNode *)pItem->data(0, rtNode).toInt();
     pItem->setSelected(false);
-    pGroupNode->SetVisible(pItem->checkState(0) == Qt::Checked);
+	bool bVisible = pItem->checkState(0) == Qt::Checked;
+    pGroupNode->SetVisible(bVisible);
     m_pViewerWidget->viewer()->Scene()->SetDirty();
 }
 
@@ -783,7 +784,8 @@ void CGeometryViewer::onItemClicked( QTreeWidgetItem *pItem, int nCol )
     {
         pItem = pItem->parent();
     }
-    m_pCmdCenter->cmdLine()->cmdBox()->setText(QString("$") + QString::number(m_trGeometry->indexOfTopLevelItem(pItem)));
+	QString text = QString("$") + QString::number(m_trGeometry->indexOfTopLevelItem(pItem));
+    m_pCmdCenter->cmdLine()->cmdBox()->setText(text);
     m_pCmdCenter->input(dtPointer, (void*)pItem->data(0, rtData).toUInt());
 }
 

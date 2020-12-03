@@ -102,7 +102,8 @@ void CViewerWidget::wheelEvent( QWheelEvent *pEvent )
 void CViewerWidget::keyPressEvent(QKeyEvent *pEvent)
 {
     if (!m_pViewer || pEvent->key() == Qt::Key_Escape) return;
-    CKeyEventArgs keyArgs(ET_KEYDOWN, pEvent->nativeVirtualKey(), 0);
+	int nKeyCode = pEvent->nativeVirtualKey();
+    CKeyEventArgs keyArgs(ET_KEYDOWN, nKeyCode, 0);
     m_pViewer->ProcessEvent(&keyArgs);
 }
 
@@ -115,7 +116,8 @@ void CViewerWidget::keyPressEvent(QKeyEvent *pEvent)
 void CViewerWidget::keyReleaseEvent(QKeyEvent *pEvent)
 {
     if (m_pViewer == 0) return;
-    CKeyEventArgs keyArgs(ET_KEYUP, pEvent->nativeVirtualKey(), 0);
+	int nKeyCode = pEvent->nativeVirtualKey();
+    CKeyEventArgs keyArgs(ET_KEYUP, nKeyCode, 0);
     m_pViewer->ProcessEvent(&keyArgs);
 }
 
