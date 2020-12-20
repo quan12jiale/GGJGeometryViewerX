@@ -626,6 +626,14 @@ void CGeometryViewer::initToolBar()
     m_btnPaste->setIcon(QIcon("image/Paste.png"));
     m_btnPaste->setToolTip(QStringLiteral("左击：粘贴\r\n右击：粘贴GGDB"));
     m_btnPaste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+	/*
+	void QAbstractButton::clicked(bool checked = false)
+	This signal is emitted when the button is activated
+	(i.e., pressed down then released while the mouse cursor is inside the button), 
+	when the shortcut key is typed, or when click() or animateClick() is called. 
+	当按钮被激活、按下快捷键或调用click()或animateClick()时，会发出clicked信号。
+	因此，当我们按下快捷键CTRL + Key_V时，会触发paste槽函数。
+	*/
     connect(m_btnPaste, &QToolButton::clicked, this, &CGeometryViewer::paste);
     connect(m_btnPaste, &CToolButton::leftClicked, this, &CGeometryViewer::paste);
     connect(m_btnPaste, &CToolButton::rightClicked, this, &CGeometryViewer::pasteFromGGDB);
