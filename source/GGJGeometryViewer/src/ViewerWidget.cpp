@@ -663,52 +663,53 @@ CGroupNode* CViewerWidget::showGeometry( CGeometry *pGeo )
     if (!pGeo)
         return NULL;
     CBody *pBody = dynamic_cast<CBody*>(pGeo);
+	CFace *pFace = dynamic_cast<CFace*>(pGeo);
     CEdge *pEdge = dynamic_cast<CEdge*>(pGeo);
-    CFace *pFace = dynamic_cast<CFace*>(pGeo);
     CSurface *pSurface = dynamic_cast<CSurface*>(pGeo);
     CPolygon *pPolygon = dynamic_cast<CPolygon*>(pGeo);
+
     CCoedgeList *pCoedgeList = dynamic_cast<CCoedgeList*>(pGeo);
-    CCoedge *pCoedge = dynamic_cast<CCoedge*>(pGeo);
     CCurve3d *pCurve3d = dynamic_cast<CCurve3d*>(pGeo);
     CCurve2d *pCurve2d = dynamic_cast<CCurve2d*>(pGeo);
+	CCoedge *pCoedge = dynamic_cast<CCoedge*>(pGeo);
     CPolyhedralFace *pPolyhedralFace = dynamic_cast<CPolyhedralFace*>(pGeo);
-    if (CBody *pBody = dynamic_cast<CBody*>(pGeo))
+    if (pBody)
     {
         return showBody(pBody);
     }
-    else if (CFace *pFace = dynamic_cast<CFace*>(pGeo))
+    else if (pFace)
     {
         return showFace(pFace);
     }
-    else if (CEdge *pEdge = dynamic_cast<CEdge*>(pGeo))
+    else if (pEdge)
     {
         return showCurve3d(pEdge->Curve());
     }
-    else if (CSurface *pSurface = dynamic_cast<CSurface*>(pGeo))
+    else if (pSurface)
     {
         return showSurface(pSurface);
     }
-    else if (CPolygon *pPolygon = dynamic_cast<CPolygon*>(pGeo))
+    else if (pPolygon)
     {
         return showPolygon(pPolygon);
     }
-    else if (CCoedgeList *pCoedgeList = dynamic_cast<CCoedgeList*>(pGeo))
+    else if (pCoedgeList)
     {
         return showCoedges(pCoedgeList);
     }
-    else if (CCurve3d *pCurve3d = dynamic_cast<CCurve3d*>(pGeo))
+    else if (pCurve3d)
     {
         return showCurve3d(pCurve3d);
     }
-    else if (CCurve2d *pCurve2d = dynamic_cast<CCurve2d*>(pGeo))
+    else if (pCurve2d)
     {
         return showCurve2d(pCurve2d);
     }
-    else if (CCoedge *pCoedge = dynamic_cast<CCoedge*>(pGeo))
+    else if (pCoedge)
     {
         return showCurve2d(pCoedge->Curve());
     }
-    else if (CPolyhedralFace *pPolyhedralFace = dynamic_cast<CPolyhedralFace*>(pGeo))
+    else if (pPolyhedralFace)
     {
         return showPolyhedralFace(pPolyhedralFace);
     }

@@ -57,10 +57,10 @@ target_include_directories(
 
 ##配置库依赖
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
-find_package(GBIM COMPONENTS Common GMath Geometry ViewCore ViewManager REQUIRED)
+find_package(GBIM COMPONENTS Common GMath Geometry ViewCore ViewManager CGBase REQUIRED)
 
 
 target_link_libraries(${LIBRARY_TARGET_NAME}
     PRIVATE Qt5::Core Qt5::Gui Qt5::Widgets
-	PRIVATE GBIM::Common GBIM::GMath GBIM::Geometry GBIM::ViewCore GBIM::ViewManager
+	PRIVATE GBIM::Common GBIM::GMath GBIM::Geometry GBIM::ViewCore GBIM::ViewManager GBIM::CGBase
 )

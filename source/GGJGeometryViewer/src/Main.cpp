@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	SetCurrentDirectoryW(strExePath.toStdWString().c_str());
 	CGeometryViewer viewer;
 
-	addNode(viewer);
+	//addNode(viewer);
 
     viewer.show();
     return app.exec();

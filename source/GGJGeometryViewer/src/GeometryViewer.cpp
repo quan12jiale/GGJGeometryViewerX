@@ -682,6 +682,12 @@ void CGeometryViewer::initToolBar()
     //m_pToolBar->addAction(m_acDiscovery);
     //connect(m_acDiscovery, &QAction::triggered, this, &CGeometryViewer::showDiscovery);
 
+	m_pToolBar->addSeparator();
+	QAction* pAddTxtAct = new QAction(this);
+	pAddTxtAct->setToolTip(QStringLiteral("导入边线图元txt"));
+	m_pToolBar->addAction(pAddTxtAct);
+	connect(pAddTxtAct, &QAction::triggered, this, &CGeometryViewer::addTxt);
+
     m_pToolBar->addSeparator();
     const QString c_Style = "QToolButton{background-color:rgb(%1,%2,%3);}";
     QWidget *pColorWidget = new QWidget(this);
@@ -1073,6 +1079,59 @@ void CGeometryViewer::viewItemString()
     //pTextDlg->showMaximized();
     pTextDlg->exec();
     delete pTextDlg;
+}
+
+void CGeometryViewer::addTxt()
+{
+	// 获取本地文档路径
+	QString strDocumentsPath = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).value(0, QDir::homePath());
+	QString strFileName = QFileDialog::getOpenFileName(this, QStringLiteral("打开TXT文件"), strDocumentsPath, "Txt File(*.txt)");
+	if (strFileName.isEmpty())
+	{
+		return;
+	}
+
+	QFile oFile(strFileName);
+	if (!oFile.open(QIODevice::ReadOnly))
+	{
+		return;
+	}
+
+	bool bAddSuccess = true;
+	while (!oFile.atEnd())
+	{
+		// AsString字符串类似于 {TYPE=1,}所以字节数组的大小不应该小于6
+		QByteArray oByteArray = oFile.readLine();
+		if (oByteArray.size() < 6)
+		{
+			continue;
+		}
+
+		CGeometry* pGeo = CGeometry::LoadFromStr(oByteArray.data());
+		if (pGeo)
+		{
+			bAddSuccess = this->addGeometry(pGeo);
+		}
+		else
+		{
+			// 复制自CGeometryViewer::paste函数 970行，下面仅处理CVector2d的场景
+			CVector2d oVec2d;
+			QString line = oByteArray;
+			line = line.trimmed();
+			const char* szInput = line.toStdString().c_str();
+
+			if (2 == sscanf(szInput, "{X=%lf Y=%lf}",
+				&oVec2d.X, &oVec2d.Y))
+			{
+				bAddSuccess = addTopItem(itVector2d, new CVector2d(oVec2d));
+			}
+		}
+
+		if (!bAddSuccess)
+		{
+			break;
+		}
+	}
 }
 
 /*!
@@ -1592,7 +1651,8 @@ void CGeometryViewer::addChildItem( QTreeWidgetItem *pParentItem )
         return;
     }
     CGeometry *pGeo = (CGeometry*)pData;
-    if (CBody *pBody = dynamic_cast<CBody*>(pGeo))
+	CBody *pBody = dynamic_cast<CBody*>(pGeo);
+    if (pBody)
     {
         addChildData(itBox3d, new CBox3d(pBody->Box()), true, -1);
         CBrepBody *pBrepBody = dynamic_cast<CBrepBody*>(pGeo);

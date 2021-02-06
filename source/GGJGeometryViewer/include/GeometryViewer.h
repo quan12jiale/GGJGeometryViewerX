@@ -167,6 +167,8 @@ public Q_SLOTS:
     void view_XZ();
     void view_YZ();
 
+	void addTxt();
+
 private:
     void addChildItem(QTreeWidgetItem *pParentItem);
     void initMenu();
